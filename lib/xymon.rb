@@ -53,7 +53,7 @@ module Xymon
           @testname = testname
           @color    = color
           @text     = text
-          @hostname = hostname ||Xymon::Client.hostname
+          @hostname = hostname || Xymon::Client.hostname
         end
 
         def partial_xymon_command_string
