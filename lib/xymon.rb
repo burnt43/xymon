@@ -31,6 +31,21 @@ module Xymon
 
     module Commands
       class AbstractCommand
+        def process
+          return unless Xymon::Client.env_exists?
+
+          command_string = full_xymon_command_string
+          Xymon::Client.log(:info, "executing #{command_string}")
+          system(command_string)
+        end
+
+        def full_xymon_command_string
+          "#{ENV['XYMON']} #{ENV['XYMSRV']} #{partial_xymon_command_string}"
+        end
+
+        def partial_xymon_command_string
+          raise 'Implement in Class!'
+        end
       end
 
       class Status < Xymon::Client::Commands::AbstractCommand
@@ -41,17 +56,10 @@ module Xymon
           @hostname = hostname ||Xymon::Client.hostname
         end
 
-        def process
-          return unless Xymon::Client.env_exists?
-
-          xymon_command = 
-            "#{ENV['XYMON']} #{ENV['XYMSRV']} " \
-            "\"status " \
-            "#{@hostname.to_xymon_fqdn}.#{@testname} " \
-            "#{@color} #{Xymon::Client.timestamp}\n#{@text}\""
-
-          Xymon::Client.log(:info, "executing #{xymon_command}")
-          system(xymon_command)
+        def partial_xymon_command_string
+          "\"status " \
+          "#{@hostname.to_xymon_fqdn}.#{@testname} " \
+          "#{@color} #{Xymon::Client.timestamp}\n#{@text}\""
         end
       end # Status
     end # Commands
