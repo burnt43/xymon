@@ -2,6 +2,10 @@ class String
   def to_xymon_fqdn
     gsub(/\./, ',')
   end
+
+  def escape_single_quotes
+    self.gsub(/'/, %Q('"'"'))
+  end
 end
 
 module Xymon
@@ -59,7 +63,7 @@ module Xymon
         def partial_xymon_command_string
           "'status " \
           "#{@hostname.to_xymon_fqdn}.#{@testname} " \
-          "#{@color} #{Xymon::Client.timestamp}\n#{@text}'"
+          "#{@color} #{Xymon::Client.timestamp}\n#{@text.escape_single_quotes}'"
         end
       end # Status
     end # Commands
@@ -68,4 +72,4 @@ end # Xymon
 
 # require 'logger'
 # Xymon::Client.logger = Logger.new(STDOUT)
-# Xymon::Client::Commands::Status.new(:foo, :green, 'OK').process
+# Xymon::Client::Commands::Status.new(:foo, :green, %Q(SELECT * FROM `users` WHERE `users`.`string` = 'thing')).process
