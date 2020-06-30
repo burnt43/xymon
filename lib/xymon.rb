@@ -57,9 +57,9 @@ module Xymon
         end
 
         def partial_xymon_command_string
-          "\"status " \
+          "'status " \
           "#{@hostname.to_xymon_fqdn}.#{@testname} " \
-          "#{@color} #{Xymon::Client.timestamp}\n#{@text}\""
+          "#{@color} #{Xymon::Client.timestamp}\n#{@text}'"
         end
       end # Status
     end # Commands
@@ -67,5 +67,5 @@ module Xymon
 end # Xymon
 
 # require 'logger'
-# Xymon::Client.logger = Logger.new('/home/jcarson/.tmp/xymon_dev.log')
+# Xymon::Client.logger = Logger.new(STDOUT)
 # Xymon::Client::Commands::Status.new(:foo, :green, 'OK').process
