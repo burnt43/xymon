@@ -1,0 +1,27 @@
+#!/bin/bash
+
+irb_bin=$(which irb)
+
+while getopts "e:" opt; do
+  case "$opt" in
+    e)
+      environment="$OPTARG"
+      ;;
+  esac
+done
+
+if [[ -z "$environment" ]]; then
+  environment=development
+fi
+
+case "$environment" in
+  production)
+    XYMSRV=209.191.1.133 XYMON=/home/jcarson/xymon/client/bin/xymon $irb_bin -r ./lib/xymon.rb
+    ;;
+  development)
+    XYMSRV=127.0.0.1 XYMON=/home/jcarson/xymon/client/bin/xymon $irb_bin -r ./lib/xymon.rb
+    ;;
+  *)
+    exit 1
+    ;;
+esac
