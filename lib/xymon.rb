@@ -13,17 +13,18 @@ end
 module Xymon
 end
 
-pathname = Pathname.new(__FILE__)
+lib_pathname = Pathname.new(__FILE__).parent
 
 # xymon/client
-require pathname.parent.join('xymon', 'client').to_s
+require lib_pathname.join('xymon', 'client').to_s
 
-# xymon/commands
-require pathname.parent.join('xymon', 'client', 'commands').to_s
-require pathname.parent.join('xymon', 'client', 'commands', 'abstract_command').to_s
-require pathname.parent.join('xymon', 'client', 'commands', 'drop').to_s
-require pathname.parent.join('xymon', 'client', 'commands', 'status').to_s
+# xymon/client/commands
+require lib_pathname.join('xymon', 'client', 'commands').to_s
+require lib_pathname.join('xymon', 'client', 'commands', 'abstract_command').to_s
+require lib_pathname.join('xymon', 'client', 'commands', 'drop').to_s
+require lib_pathname.join('xymon', 'client', 'commands', 'status').to_s
 
-# require 'logger'
-# Xymon::Client.logger = Logger.new(STDOUT)
-# Xymon::Client::Commands::Status.new(:foo, :green, %Q(SELECT * FROM `users` WHERE `users`.`string` = 'thing')).process
+# xymon/config
+require lib_pathname.join('xymon', 'config').to_s
+require lib_pathname.join('xymon', 'config', 'alerts').to_s
+require lib_pathname.join('xymon', 'config', 'alerts', 'parser').to_s

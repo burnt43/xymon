@@ -1,0 +1,178 @@
+THE STUFF ABOVE THE BEHELIT STRING SHOULD BE IGNORE, SO IT DOES NOT MATTER
+THAT THIS IS NOT A COMMENT AND THIS IS NOT SYNTACTICALLY CORRECT.
+
+# --------------------------------------------------------------------------------
+# DO_NOT_DELETE_THIS_STRING_BEHELIT
+# ENG's Auto-Notifier Config. Don't mess with this unless you know what you
+# are doing.
+# --------------------------------------------------------------------------------
+
+####################
+# Host Macros
+
+# Media Gateways
+$ENG_RB_MGS=%(mg4.monmouth.com|mg5.monmouth.com|mg6.monmouth.com)
+$ENG_NB_MGS=%nb-mg(0|1|2|3|4|5|6)
+$ENG_NK_MGS=%nk-mg(0|1|2|3)
+$ENG_CM_MGS=%cm-mg(0|1|2)
+$ENG_PL_MGS=%pl-mg(0|1)
+
+# Feature Servers
+$ENG_RB_FEATURE_SERVERS=%fs(a|0|1)
+$ENG_PL_FEATURE_SERVERS=pl-fsa
+$ENG_HOSTED_SERVERS=%(hpbx.monmouth.com|hpbx0|hpbx1|hpbx2|hpbx3.monmouth.com|hpbx4.monmouth.com|hpbx5.monmouth.com|vhpbx1.monmouth.com|vhpbx2.monmouth.com|vhpbx3.monmouth.com|vhpbx4.monmouth.com)
+
+# Assorted Service Servers
+$ENG_GLUSTER_SERVERS=%(gs3|gs4|gs5).monmouth.com
+$ENG_CONFERENCE_SERVERS=%conf(0|1)
+$ENG_APP_SERVERS=%app(0|1|2).monmouth.com
+$ENG_RECORDER_SERVERS=%(recorder0.monmouth.com|recorder1)
+$ENG_VIDCONF_SERVERS=%(vidconf|vidconf0|vidconf1)
+$ENG_MTT3_SERVERS=mtt3.monmouth.com
+
+# Web Servers
+$ENG_WEB_SERVERS=%(hosted|crm.monmouth.com)
+
+# DACS
+$ENG_DACS=%(tellabs|cm-dacs1|cm-dacs2|cm-dacs3)
+
+# Power Plan
+$ENG_POWER_PLANT=%(alpha-c|argus-a|argus-b)-power-plant
+
+# Timing
+$ENG_TIMING=symmetricom-bitclock-timesource
+
+# Monmouth PBX
+$ENG_MTT_PBX=pbx
+
+# Fraud
+$ENG_FRAUD=fraud-alert
+
+# Fiber Terminals
+$ENG_7120=%(rdbk-7120-1|rdbk-7120-2|nbwk-7120-1|nwrk-7120-1)
+$ENG_ONS=%(rdbk-ONS|nwrk-ONS)
+
+####################
+# Recipient Macros
+
+# The time specification consists of
+# 
+# day-of-week: W means Mon-Fri ("weekdays"), * means all days, 0 .. 6 = Sunday .. Saturday. Listing multiple days is possible, e.g. "60" is valid meaning "Saturday and Sunday".
+# 
+# starttime: Time to start showing errors, must be in 24-hour clock format as HHMM hours/minutes. E.g. for 8 am enter "0800", for 9.30 pm enter "2130"
+# 
+# endtime: Time to stop showing errors.
+# 
+# If necessary, multiple periods can be specified. E.g. to monitor a site 24x7, except between noon and 1 pm, use NKTIME=*:0000:1159,*:1300:2359
+# 
+# The interval between start time and end time may cross midnight, e.g. *:2330:0200 would be valid and have the same effect as *:2330:2400,*:0000:0200. 
+
+$ENG_NOTIFY_TIME_DAY=*
+$ENG_NOTIFY_START_TIME=0000
+$ENG_NOTIFY_END_TIME=0800
+$ENG_TIME=TIME=$ENG_NOTIFY_TIME_DAY:$ENG_NOTIFY_START_TIME:$ENG_NOTIFY_END_TIME
+
+$ENG_NOTIFY_SCRIPT=/usr/local/xymon/server/user_scripts/xymon_alert.sh
+$ENG_NOTIFY_RECIPIENT=foo
+$ENG_NOTIFY_FORMAT=plain
+$ENG_NOTIFY_REPEAT=365d
+$ENG_BASE_RECIPIENT_RULE=SCRIPT $ENG_NOTIFY_SCRIPT $ENG_NOTIFY_RECIPIENT FORMAT=$ENG_NOTIFY_FORMAT REPEAT=$ENG_NOTIFY_REPEAT
+
+$DEV_NOTIFY_TIME_DAY=*
+$DEV_NOTIFY_START_TIME=0830
+$DEV_NOTIFY_END_TIME=1730
+$DEV_TIME=TIME=$DEV_NOTIFY_TIME_DAY:$DEV_NOTIFY_START_TIME:$DEV_NOTIFY_END_TIME
+
+####################
+# ENG Alert Config
+
+# ENG_RB_MGS
+HOST=$ENG_RB_MGS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_NB_MGS
+HOST=$ENG_NB_MGS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_CM_MGS
+HOST=$ENG_CM_MGS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_PL_MGS
+HOST=$ENG_PL_MGS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_NK_MGS
+HOST=$ENG_NK_MGS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE 
+
+# ENG_RB_FEATURE_SERVERS
+HOST=$ENG_RB_FEATURE_SERVERS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_PL_FEATURE_SERVERS
+HOST=$ENG_PL_FEATURE_SERVERS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_HOSTED_SERVERS
+HOST=$ENG_HOSTED_SERVERS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_GLUSTER_SERVERS
+HOST=$ENG_GLUSTER_SERVERS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_CONFERENCE_SERVERS
+HOST=$ENG_CONFERENCE_SERVERS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_APP_SERVERS
+HOST=$ENG_APP_SERVERS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_RECORDER_SERVERS
+HOST=$ENG_RECORDER_SERVERS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_VIDCONF_SERVERS
+HOST=$ENG_VIDCONF_SERVERS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_MTT3_SERVERS
+HOST=$ENG_MTT3_SERVERS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_WEB_SERVERS
+HOST=$ENG_WEB_SERVERS EXSERVICE=http COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+HOST=$ENG_WEB_SERVERS SERVICE=http COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE DURATION>1m
+
+# ENG_DACS
+HOST=$ENG_DACS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_POWER_PLANT
+HOST=$ENG_POWER_PLANT COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_TIMING
+HOST=$ENG_TIMING COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_MTT_PBX
+HOST=$ENG_MTT_PBX COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_FRAUD
+HOST=$ENG_FRAUD COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_7120
+HOST=$ENG_7120 COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
+
+# ENG_ONS
+HOST=$ENG_ONS COLOR=red $ENG_TIME
+  $ENG_BASE_RECIPIENT_RULE
