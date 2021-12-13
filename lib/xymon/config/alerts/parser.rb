@@ -9,7 +9,7 @@ module Xymon
         end
 
         def parse
-          macro_regex          = %r/\$[A-Z_]+/
+          macro_regex          = %r/\$[0-9A-Z_]+/
           attribute_regex      = %r/\b([A-Z_]+)(=|<|>)([^\s]+)/
           non_whitespace_regex = %r/[^\s]/
 
@@ -58,8 +58,21 @@ module Xymon
 
           # Handler for recipient rules.
           rule_recipient_handler = ->(line) {
+            split_result = expand_macros.call(line.lstrip).split
+
+            recipient_attrs = {}
+
+            case split_result[0]
+            when 'SCRIPT'
+              recipient_attrs['TYPE']      = split_result[0]
+              recipient_attrs['SCRIPT']    = split_result[1]
+              recipient_attrs['RECIPIENT'] = split_result[2]
+            end
+              
             current_rule['recipients'] ||= []
-            current_rule['recipients'].push(attribute_list_as_hash.call(line))
+            current_rule['recipients'].push(
+              recipient_attrs.merge(attribute_list_as_hash.call(line))
+            )
           }
 
           raw_text.lines.each do |l|
