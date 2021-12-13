@@ -59,7 +59,7 @@ while getopts "c:hl:m:s:t:" opt; do
   esac
 done
 
-[[ -z "$comm" ]] && echo_error "no comm given. use the -c option." && exit 1
+[[ -z "$comm" ]] && echo_error "no comm given. use the -c option." && echo_usage && exit 1
 
 case "$comm" in
   Drop)
