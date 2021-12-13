@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'xymon'
-  s.version     = '0.0.6'
+  s.version     = '0.0.7'
   s.summary     = 'xymon stuff'
   s.description = 'xymon stuff'
   s.authors     = ['James Carson']

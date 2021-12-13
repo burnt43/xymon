@@ -89,7 +89,7 @@ module Xymon
                 # NoOp: These are comments
               elsif line.start_with?('$')
                 macro_handler.call(line)
-              elsif line.start_with?(non_whitespace_regex)
+              elsif (comp_ruby_version > '002003003' ? line.start_with?(non_whitespace_regex) : line =~ /^[^\s]/)
                 rule_header_handler.call(line)
               else
                 rule_recipient_handler.call(line)

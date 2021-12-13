@@ -1,5 +1,13 @@
 require 'pathname'
 
+module Kernel
+  comp_ruby_version = RUBY_VERSION.split('.').map {|n| sprintf("%03d", n)}.join
+
+  define_method :comp_ruby_version do
+    comp_ruby_version
+  end
+end
+
 class String
   def to_xymon_fqdn
     gsub(/\./, ',')
